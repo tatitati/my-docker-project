@@ -1,0 +1,23 @@
+# mynginxapp:
+#     build: ./nginxapp
+#     volumes:
+#         - ./nginxapp/app:/var/www/mynginxapp
+#     ports:
+#         - "80:80"        
+#     links:
+#         - myfpm
+mynginx:
+    build: ./nginx
+    ports:
+        - "80:80"    
+    volumes:
+        - ./app:/var/www/app 
+    links:
+        - myfpm
+
+myfpm:
+    build: ./fpm
+    volumes:
+        - ./app:/var/www/app        
+# myfpm:
+#     image: php:7-fpm

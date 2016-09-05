@@ -1,11 +1,3 @@
-# mynginxapp:
-#     build: ./nginxapp
-#     volumes:
-#         - ./nginxapp/app:/var/www/mynginxapp
-#     ports:
-#         - "80:80"        
-#     links:
-#         - myfpm
 mynginx:
     build: ./nginx
     ports:
@@ -14,10 +6,18 @@ mynginx:
         - ./app:/var/www/app 
     links:
         - myfpm
+        - mydb
 
 myfpm:
     build: ./fpm
     volumes:
-        - ./app:/var/www/app        
+        - ./app:/var/www/app  
+
+mydb:
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: mydockerpassword
+    POSTGRES_USER: mydockeruser
+    POSTGRES_DB: mydockerdatabase
 # myfpm:
 #     image: php:7-fpm

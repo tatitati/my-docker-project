@@ -1,23 +1,31 @@
-mynginx:
-    build: ./nginx
-    ports:
-        - "80:80"    
-    volumes:
-        - ./app:/var/www/app 
-    links:
-        - myfpm
-        - mydb
+version: '2'
+services:    
+    mynginx:
+        image: nginx:latest
+        container_name: nginx-container
+        ports:
+            - 80:80
+        volumes:
+            - ./app:/var/www/app 
+            - ./nginx/nginx.my-project.conf:/etc/nginx/conf.d/nginx.my-project.conf
+        links:
+            - myfpm
+            - mydb
 
-myfpm:
-    build: ./fpm
-    volumes:
-        - ./app:/var/www/app  
+    myfpm:
+        image: php:fpm
+        container_name: fpm-container
+        volumes:
+            - ./app:/var/www/app  
+            - ./fpm/fpm.my-project.conf:/etc/php5/fpm/pool.d/fpm.my-project.conf
 
-mydb:
-  image: postgres
-  environment:
-    POSTGRES_PASSWORD: mydockerpassword
-    POSTGRES_USER: mydockeruser
-    POSTGRES_DB: mydockerdatabase
+    mydb:
+      image: postgres
+      container_name: postgres-container
+      environment:
+        POSTGRES_PASSWORD: mydockerpassword
+        POSTGRES_USER: mydockeruser
+        POSTGRES_DB: mydockerdatabase            
+
 # myfpm:
 #     image: php:7-fpm

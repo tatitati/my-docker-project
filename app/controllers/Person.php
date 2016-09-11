@@ -6,12 +6,17 @@ use \Psr\Http\Message\ResponseInterface as Response;
 $app->get(
 	'/person/{id}', 
 	function (Request $request, Response $response) {
-	    $id = $request->getAttribute('id');
-	    $response->getBody()->write("Hello, $id");
+	    $id = $request->getAttribute('id');	    
+
+	    $personData = [
+	    	'name'		=>	'francisco jose',
+	    	'surname'	=>	'albert albusac'
+	    ];	     
 
 	    // fetch from database this user id and return it
 
-	    return $response;    
+	    // return $response;    
+	    return $this->view->render($response, 'person.twig', $personData);
 });
 
 

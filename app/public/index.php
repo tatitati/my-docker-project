@@ -15,7 +15,22 @@ session_start();
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
-$app = new \Slim\App($settings);
+
+$app       = new \Slim\App($settings);
+$container = $app->getContainer();
+
+// REGISTER TWIG TEMPLATES
+$container['view'] = function ($container) {
+    $view = new \Slim\Views\Twig(__DIR__ . '/../templates', [
+        'cache' => __DIR__ . '/cache'
+    ]);
+    $view->addExtension(new \Slim\Views\TwigExtension(
+        $container['router'],
+        $container['request']->getUri()
+    ));
+
+    return $view;
+};
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';

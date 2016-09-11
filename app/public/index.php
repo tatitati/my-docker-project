@@ -26,5 +26,13 @@ require __DIR__ . '/../src/middleware.php';
 // Register routes
 require __DIR__ . '/../src/routes.php';
 
+
+// load controllerss
+foreach(glob(__DIR__ . "/../controllers/*.php") as $file){
+    require $file;
+}
+
+
+
 // Run app
 $app->run();
